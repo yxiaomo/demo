@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <title>移动端会议时间插件</title>
+	    <link rel="stylesheet" href="mtimer.css" />
+	    
+	</head>
+	<body>
+		<div class="date_input_box" id="date_select">
+			<div class="date_input">时间:<span class="date_time_show ">2018-01-25 11:00~15:00</span></div>
+			<div class="mui-icon mui-icon-arrowright"></div>
+		</div>
+		
+		<div id="timeslot" class="timeslot_alert">
+			<div class="alert_box">
+				<div class="alert_title">选择会议时间</div>
+				<div class="alert_head">
+					<a href="javascript:;" class="active">开始时间<span id="roomStart"></span></a>
+					<a href="javascript:;">结束时间<span id="roomEnd"></span></a>
+				</div>
+				<div class="alert_date_main">
+					<div class="date_select_box active">
+						
+					</div>
+					<div class="date_select_box">
+						
+					</div>
+				</div>
+				<div class="alert_btn_group">
+					<a href="javascript:;" class="cancel_btn">取消</a>
+					<a href="javascript:;" class="ok_btn">确认</a>
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript" src="mtimer.js" ></script>
+		<script>
+			mtimer('#date_select',{
+				dateStart : new Date(),//插件开始时间
+				dateNum : 14,//插件开始时间开始显示天数
+				timeStart : 8,//插件可供选择的小时（开始）
+				timeNum : 10,//插件可供选择的小时后多少小时可供选择
+				filter:function(startTime,endTime){//选中时间，点击确定判断事件
+					var nowYear = new Date().getFullYear();
+					var startTimeArr = startTime.split(' ');
+					var endTimeArr = endTime.split(' ');
+					if(startTimeArr[0] != endTimeArr[0]){
+						alert('会议室无法跨天预约');
+						return false;
+					}
+					if(new Date(nowYear + '-' +startTime).getTime() >= new Date(nowYear + '-' +endTime).getTime()){
+						alert('开始时间必须小于结束时间');
+						return false;
+					}
+					
+					return true;
+				},
+				onOk:function(){//选中时间，点击确定回调事件
+					alert('时间选择成功');
+				},
+				onCancel:function(){//点击取消回调事件
+					alert('取消');
+				}
+			});
+		</script>
+	</body>
+</html>
